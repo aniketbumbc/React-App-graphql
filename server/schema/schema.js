@@ -10,6 +10,25 @@ const {
     GraphQLSchema
 } = graphql;
 
+const _ = require('loadsh');
+
+var books = [{
+        name: 'Wings of Fire',
+        genre: 'Fantasy',
+        id: '1'
+    },
+    {
+        name: 'Wings of Fire-1',
+        genre: 'Fantasy',
+        id: '2'
+    },
+    {
+        name: 'Wings of Fire-2',
+        genre: 'Fantasy',
+        id: '2'
+    }
+];
+
 
 //Object Type of graph
 const BookType = new GraphQLObjectType({
@@ -29,16 +48,21 @@ const BookType = new GraphQLObjectType({
 
 // query for front end to access root
 const RootQuery = new GraphQLObjectType({
-
-    name:'RootQueryType',
-    fields:{
-        book:{
-            type:BookType,
-            args:{id:{type:GraphQLString}},
-            resolve(parent,args){
-
-                //args.id
+    name: 'RootQueryType',
+    fields: {
+        book: {
+            type: BookType,
+            args: {
+                id: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
                 //code get data form db
+                return _.find(books, {
+                    id: args.id
+                });
+
             }
         }
     }
@@ -48,6 +72,7 @@ const RootQuery = new GraphQLObjectType({
 
 
 // which query user to allow to use
-module.exports = new GraphQLSchema ({
-    query:RootQuery
+
+module.exports = new GraphQLSchema({
+    query: RootQuery
 })
