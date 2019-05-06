@@ -9,7 +9,8 @@ const {
     GraphQLString,
     GraphQLSchema,
     GraphQLID,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLList
 } = graphql;
 
 const _ = require('loadsh');
@@ -29,7 +30,25 @@ var books = [{
     {
         name: 'Wings of Fire-2',
         genre: 'Fantasy',
-        id: '2',
+        id: '3',
+        authorId:'3'
+    },
+    {
+        name: 'Wings of Fire-100',
+        genre: 'Fantasy',
+        id: '4',
+        authorId:'2'
+    },
+    {
+        name: 'Wings of Fire-200',
+        genre: 'Fantasy',
+        id: '5',
+        authorId:'3'
+    },
+    {
+        name: 'Wings of Fire-300',
+        genre: 'Fantasy',
+        id: '6',
         authorId:'3'
     }
 ];
@@ -48,7 +67,7 @@ var authors = [{
 {
     name: 'terry',
     age: 66,
-    id: '2'
+    id: '3'
 }
 ];
 
@@ -65,6 +84,14 @@ const AuthorType = new GraphQLObjectType({
         },
         age: {
             type: GraphQLInt
+        },
+        books:{
+            type:GraphQLList(BookType),
+            resolve(parent,args){
+                console.log(parent)
+                    //find in books array author Id which == parent id in author array
+                return _.filter(books,{authorId:parent.id});
+            }
         }
        
     })
@@ -85,7 +112,6 @@ const BookType = new GraphQLObjectType({
         author:{
             type:AuthorType,
             resolve(parent,args){
-                console.log(parent);
                 return _.find(authors,{id:parent.authorId});
             }
         }
