@@ -17,17 +17,20 @@ const _ = require('loadsh');
 var books = [{
         name: 'Wings of Fire',
         genre: 'Fantasy',
-        id: '1'
+        id: '1',
+        authorId:'1'  //relationship with author collection
     },
     {
         name: 'Wings of Fire-1',
         genre: 'Fantasy',
-        id: '2'
+        id: '2',
+        authorId:'2'
     },
     {
         name: 'Wings of Fire-2',
         genre: 'Fantasy',
-        id: '2'
+        id: '2',
+        authorId:'3'
     }
 ];
 
@@ -63,6 +66,7 @@ const AuthorType = new GraphQLObjectType({
         age: {
             type: GraphQLInt
         }
+       
     })
 });
 
@@ -77,6 +81,13 @@ const BookType = new GraphQLObjectType({
         },
         genre: {
             type: GraphQLString
+        },
+        author:{
+            type:AuthorType,
+            resolve(parent,args){
+                console.log(parent);
+                return _.find(authors,{id:parent.authorId});
+            }
         }
     })
 });
