@@ -7,7 +7,9 @@ const graphql = require('graphql');
 const {
     GraphQLObjectType,
     GraphQLString,
-    GraphQLSchema
+    GraphQLSchema,
+    GraphQLID,
+    GraphQLInt
 } = graphql;
 
 const _ = require('loadsh');
@@ -30,12 +32,45 @@ var books = [{
 ];
 
 
+var authors = [{
+    name: 'Randy paushye',
+    age: 33,
+    id: '1'
+},
+{
+    name: 'Simon Sinek',
+    age: 42,
+    id: '2'
+},
+{
+    name: 'terry',
+    age: 66,
+    id: '2'
+}
+];
+
+
 //Object Type of graph
+const AuthorType = new GraphQLObjectType({
+    name: 'Author',
+    fields: () => ({
+        id: {
+            type: GraphQLID
+        },
+        name: {
+            type: GraphQLString
+        },
+        age: {
+            type: GraphQLInt
+        }
+    })
+});
+
 const BookType = new GraphQLObjectType({
     name: 'Book',
     fields: () => ({
         id: {
-            type: GraphQLString
+            type: GraphQLID
         },
         name: {
             type: GraphQLString
@@ -46,6 +81,9 @@ const BookType = new GraphQLObjectType({
     })
 });
 
+
+
+
 // query for front end to access root
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -54,7 +92,7 @@ const RootQuery = new GraphQLObjectType({
             type: BookType,
             args: {
                 id: {
-                    type: GraphQLString
+                    type: GraphQLID
                 }
             },
             resolve(parent, args) {
@@ -64,7 +102,23 @@ const RootQuery = new GraphQLObjectType({
                 });
 
             }
+        },
+
+        author: {
+            type: AuthorType,
+            args: {
+                id: {
+                    type: GraphQLID
+                }
+            },
+            resolve(parent, args) {
+                return _.find(authors, {
+                    id: args.id
+                });
+
+            }
         }
+
     }
 
 });
