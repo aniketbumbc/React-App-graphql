@@ -173,6 +173,33 @@ const RootQuery = new GraphQLObjectType({
 });
 
 
+//Mutation for data
+
+// const Mutation = new GraphQLObjectType({
+//     name:Mutation,
+//     fields:{
+//         addAuthor:{
+//             type:AuthorType,
+//             args:{
+//                 name:{type:GraphQLString},
+//                 age:{type:GraphQLInt}
+//             },
+
+//             resolve(parent,args){
+
+               
+
+//             }
+
+//         }
+
+//     }
+// })
+
+
+
+
+
 
 // which query user to allow to use
 
